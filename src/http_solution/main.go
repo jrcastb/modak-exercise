@@ -25,6 +25,10 @@ func main() {
 		NotificationType: "news",
 		Limiter:          rate.NewLimiter(rate.Every(30*time.Second), 1),
 	}
+	limiters["marketing"] = &RateLimiter{
+		NotificationType: "marketing",
+		Limiter:          rate.NewLimiter(rate.Every(20*time.Second), 1),
+	}
 
 	http.HandleFunc("/send-message", sendNotificationHandler)
 
