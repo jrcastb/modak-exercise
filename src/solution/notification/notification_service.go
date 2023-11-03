@@ -25,6 +25,15 @@ type RateLimiter struct {
 	Limiter          *rate.Limiter
 }
 
+type Message interface {
+	SendNotification(notificationType string)
+}
+
+func (r RateLimiter) SendNotification(notificationType string) {
+	value := fmt.Sprintf("Notificación de tipo %s enviada.", notificationType)
+	fmt.Printf("%v %v\n", time.Now().Format("15:04:05"), value)
+}
+
 func NewNotificationService() map[string]*RateLimiter {
 	limiters := make(map[string]*RateLimiter)
 
@@ -49,9 +58,4 @@ func Per(eventCount int, duration time.Duration) rate.Limit {
 
 func newLimiter(eventCount int, duration time.Duration) *rate.Limiter {
 	return rate.NewLimiter(Per(eventCount, duration), 1)
-}
-
-func (r RateLimiter) SendNotification(notificationType string) {
-	value := fmt.Sprintf("Notificación de tipo %s enviada.", notificationType)
-	fmt.Printf("%v %v\n", time.Now().Format("15:04:05"), value)
 }
